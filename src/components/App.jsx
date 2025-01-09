@@ -16,6 +16,21 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const savedContacts = localStorage.getItem('contact');
+    if (savedContacts !== null) {
+      this.setState({ contacts: JSON.parse(savedContacts) });
+    } else {
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addNumber = ({ name, number }) => {
     const contactWithSameName = this.state.contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
